@@ -1,7 +1,7 @@
 package Problem392IsSubsequence;
 
 public class IsSubsequence {
-    public static boolean isSubsequence(String s, String t) {
+    public static boolean isSubsequenceTwoPointer(String s, String t) {
         // edge case where s lebih gede dari t
         if (s.length() > t.length()) {
             return false;
@@ -22,9 +22,15 @@ public class IsSubsequence {
         return i == s.length();
     }
 
+    public static boolean isSubsequence(String s, String t) { // DP solution
+
+        return false;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(isSubsequence("abc", "ahbgcd"));
-        System.out.println(isSubsequence("axc","ahbgcd"));
+        System.out.println(isSubsequenceTwoPointer("abc", "ahbgcd"));
+        System.out.println(isSubsequenceTwoPointer("axc", "ahbgcd"));
     }
 
 }
