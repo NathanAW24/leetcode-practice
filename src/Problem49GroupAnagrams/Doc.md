@@ -141,3 +141,74 @@ I am iterating over `str1` for `hash2`, should be `str2` in this line
     for letter in str1:
 ...
 ```
+
+## Problem 3: Time limit exceeded
+```python
+class Solution:
+
+    def isAnagram(self, str1, str2):  # HELPER
+        # str1 and str2 are anagrams if each letter in each string has the same number of appearances
+
+        # modularize this IF GOT TIME
+        hash1 = {}
+        for letter in str1:
+            if letter in hash1:
+                hash1[letter] = hash1[letter] + 1
+            else:
+                hash1[letter] = 1
+
+        hash2 = {}
+        for letter in str2:
+            if letter in hash2:
+                hash2[letter] = hash2[letter] + 1
+            else:
+                hash2[letter] = 1
+
+        return True if hash1 == hash2 else False
+
+    def hasAnagramInHash(self, hash, string):  # HELPER
+        for str_key in hash.keys():
+            if self.isAnagram(string, str_key):
+                return True, str_key
+        return False, string
+
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        hash = {}
+
+        for word in strs:
+            has_anagram, str_key = self.hasAnagramInHash(hash, word)
+            if has_anagram:
+                hash[str_key].append(word)
+            else:
+                hash[str_key] = [str_key]
+
+        return list(hash.values())
+```
+
+What can be optimized here?
+
+ChatGPT suggested
+```python
+class Solution:
+
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        hash = {}
+
+        for word in strs: # O(N)
+            # Use sorted tuple of the word as key
+            sorted_word = tuple(sorted(word))  # Sorting the word to create a unique key  for anagrams, at most O(L^2)
+            if sorted_word in hash: # this step can be O(1) and not O(N) since we don't need to iterate over every word in the hash
+                hash[sorted_word].append(word)
+            else:
+                hash[sorted_word] = [word]
+
+        return list(hash.values())
+```
+
+`isAnagram(...)` - `O(L)` complexity, `L` is the length of the string - equivalent to `sorted(word)` also `O(L)`
+`hasAnagramInHash(...)` - `O(N * L)` complexity, `N` is the length of `strs` input array - THIS CAN BE OPTIMIZED, because searching for an item in hash should not need iteration - In the new code this is equivalent to checking `sorted_word in hash` which is O(1) complexity
+`groupAnagrams(...)` - `O(N^2 * L)` complexity - same complexity of `O(N)` when iterating for every `word` inside `strs`
+
+To optimize finding the same anagram in the hash, we can do `sorted_word = tuple(sorted(word))` and `sorted_word in hash` to make the operation quicker.
+
+Most important factor here, it uses the `sorted_word` as the key since it is the common thing between all the anagrams, then the values be the `word` in its initial form, before sorted. Hence, even with a few different `word`s that are anagrams, it can still be mapped to the same `sorted_word` value.

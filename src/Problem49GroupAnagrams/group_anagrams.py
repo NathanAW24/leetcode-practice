@@ -2,42 +2,15 @@ from typing import List
 
 
 class Solution:
-
-    def isAnagram(self, str1, str2):  # HELPER
-        # str1 and str2 are anagrams if each letter in each string has the same number of appearances
-
-        # modularize this IF GOT TIME
-        hash1 = {}
-        for letter in str1:
-            if letter in hash1:
-                hash1[letter] = hash1[letter] + 1
-            else:
-                hash1[letter] = 1
-
-        hash2 = {}
-        for letter in str2:
-            if letter in hash2:
-                hash2[letter] = hash2[letter] + 1
-            else:
-                hash2[letter] = 1
-
-        return True if hash1 == hash2 else False
-
-    def hasAnagramInHash(self, hash, string):  # HELPER
-        for str_key in hash.keys():
-            if self.isAnagram(string, str_key):
-                return True, str_key
-        return False, string
-
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        hash = {}
+        hash = {}  # key is sorted word string, value is array of anagrams
 
         for word in strs:
-            has_anagram, str_key = self.hasAnagramInHash(hash, word)
-            if has_anagram:
-                hash[str_key].append(word)
+            sorted_word = str(sorted(word))
+            if sorted_word in hash:
+                hash[sorted_word].append(word)
             else:
-                hash[str_key] = [str_key]
+                hash[sorted_word] = [word]
 
         return list(hash.values())
 
