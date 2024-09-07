@@ -15,13 +15,6 @@ class Solution:
         return list(hash.values())
 
 
-print(Solution().isAnagram("abcc", "bcca"))  # true
-print(Solution().isAnagram("tan", "eat"))
-print(Solution().hasAnagramInHash({
-    "cba": ["cab"]
-}, "abc"))
-print(Solution().hasAnagramInHash({}, "abc"))
-
 # test case 1
 strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
 solution = Solution()
