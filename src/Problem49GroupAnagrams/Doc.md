@@ -248,3 +248,40 @@ class Solution:
 ```
 
 Here is the code with a little less memory usage.
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        hash = {}  # key is sorted word string, value is array of anagrams
+
+        for word in strs:
+            count = [0] * 26
+
+            for letter in word:
+                count[ord(letter) - ord('a')] += 1
+
+            if tuple(count) in hash:
+                hash[tuple(count)].append(word)
+            else:
+                hash[tuple(count)] = [word]
+
+        return list(hash.values())
+```
+
+Here is a python feature that makes the `hash` default to create an empty list everytime `hash[count]` does not exist, so no need to check for the if statement. Uses `defaultdict(list)`.
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # key is sorted word string, value is array of anagrams
+        hash = defaultdict(list)
+
+        for word in strs:
+            count = [0] * 26
+
+            for letter in word:
+                count[ord(letter) - ord('a')] += 1
+
+            hash[tuple(count)].append(word)
+
+        return list(hash.values())
+```
