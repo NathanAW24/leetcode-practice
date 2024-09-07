@@ -34,12 +34,9 @@ class Solution:
 
         for word in strs:
             has_anagram, str_key = self.hasAnagramInHash(hash, word)
-            print(f"hash: {hash}")
             if has_anagram:
-                print("has anagram")
                 hash[str_key].append(word)
             else:
-                print("! has anagram")
                 hash[str_key] = [str_key]
 
         return list(hash.values())
