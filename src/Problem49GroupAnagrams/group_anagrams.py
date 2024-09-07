@@ -15,7 +15,7 @@ class Solution:
 
             hash[tuple(count)].append(word)
 
-        return list(hash.values())
+        return hash.values()
 
 
 # test case 1

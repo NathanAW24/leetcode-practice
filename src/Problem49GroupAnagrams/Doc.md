@@ -285,3 +285,22 @@ class Solution:
 
         return list(hash.values())
 ```
+
+Just remembered `hash.values()` is a `list` already lol.
+
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # key is sorted word string, value is array of anagrams
+        hash = defaultdict(list)
+
+        for word in strs:
+            count = [0] * 26
+
+            for letter in word:
+                count[ord(letter) - ord('a')] += 1
+
+            hash[tuple(count)].append(word)
+
+        return hash.values()
+```
