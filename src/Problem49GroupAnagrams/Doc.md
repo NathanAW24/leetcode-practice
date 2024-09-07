@@ -205,10 +205,22 @@ class Solution:
         return list(hash.values())
 ```
 
-`isAnagram(...)` - `O(L)` complexity, `L` is the length of the string - equivalent to `sorted(word)` also `O(L)`
+`isAnagram(...)` - `O(L)` complexity, `L` is the length of the string, instead of counting the no of appearances of each letter can just do the suggested, sort the word - equivalent to `sorted(word)` also `O(L)`
 `hasAnagramInHash(...)` - `O(N * L)` complexity, `N` is the length of `strs` input array - THIS CAN BE OPTIMIZED, because searching for an item in hash should not need iteration - In the new code this is equivalent to checking `sorted_word in hash` which is O(1) complexity
 `groupAnagrams(...)` - `O(N^2 * L)` complexity - same complexity of `O(N)` when iterating for every `word` inside `strs`
 
 To optimize finding the same anagram in the hash, we can do `sorted_word = tuple(sorted(word))` and `sorted_word in hash` to make the operation quicker.
 
 Most important factor here, it uses the `sorted_word` as the key since it is the common thing between all the anagrams, then the values be the `word` in its initial form, before sorted. Hence, even with a few different `word`s that are anagrams, it can still be mapped to the same `sorted_word` value.
+
+# Neetcode Solution
+Instead of `O(N * L * log L)` how to make it shorter.
+
+This is his drawing of the solution
+![alt text](image.png)
+
+So basically his solution is to...
+1. initialize `count` variable, empty array with `[0, ...<26-times-total>... ,0]` to count the number of how many times the letter appears. For the index, map `'a'` to `0`, ..., map `'z'` to `25`, then the value will be the 
+2. For each letter in the `word`, do `+1` to the `count` element corresponding letter represented as index. Example, `'abb'` means `count = [1,2,0,...,0]`
+3. Use this count as the key in `hash`, append `word` to `hash[count]` if `count` in  `hash`, initialize `count` in `hash` with `[word]` if not.
+
