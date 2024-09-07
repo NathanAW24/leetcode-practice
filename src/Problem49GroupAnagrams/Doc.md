@@ -224,3 +224,27 @@ So basically his solution is to...
 2. For each letter in the `word`, do `+1` to the `count` element corresponding letter represented as index. Example, `'abb'` means `count = [1,2,0,...,0]`
 3. Use this count as the key in `hash`, append `word` to `hash[count]` if `count` in  `hash`, initialize `count` in `hash` with `[word]` if not.
 
+```python
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        hash = {}  # key is sorted word string, value is array of anagrams
+
+        for word in strs:
+            count = [0 for i in range(26)]
+
+            for letter in word:
+                ascii_letter = ord(letter)
+                ascii_a = ord('a')
+                idx = ascii_letter - ascii_a
+
+                count[idx] = count[idx] + 1
+
+            if tuple(count) in hash:
+                hash[tuple(count)].append(word)
+            else:
+                hash[tuple(count)] = [word]
+
+        return list(hash.values())
+```
+
+Here is the code with a little less memory usage.

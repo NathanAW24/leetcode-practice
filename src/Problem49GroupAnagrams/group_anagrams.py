@@ -6,14 +6,10 @@ class Solution:
         hash = {}  # key is sorted word string, value is array of anagrams
 
         for word in strs:
-            count = [0 for i in range(26)]
+            count = [0] * 26
 
             for letter in word:
-                ascii_letter = ord(letter)
-                ascii_a = ord('a')
-                idx = ascii_letter - ascii_a
-
-                count[idx] = count[idx] + 1
+                count[ord(letter) - ord('a')] += 1
 
             if tuple(count) in hash:
                 hash[tuple(count)].append(word)
