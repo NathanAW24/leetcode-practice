@@ -13,7 +13,7 @@ class Solution:
         sorted_key_value_pair = sorted(
             hash.items(), key=lambda item: item[1], reverse=True)
 
-        return [key_value[0] for key_value in sorted_key_value_pair][0:k]
+        return [sorted_key_value_pair[i][0] for i in range(0, k)]
 
 
 # test case 1
