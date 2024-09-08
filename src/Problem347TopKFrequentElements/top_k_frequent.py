@@ -11,12 +11,8 @@ class Solution:
         for num in nums:
             hash[num] += 1
 
-        print(hash.items())
         for num, count in hash.items():
-            print(count)
-            print(counts[count])
             counts[count].append(num)
-            print(counts)
 
         res = []
         for i in range(len(nums), -1, -1):
