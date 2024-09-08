@@ -60,6 +60,13 @@ all the empty arrays `[]` refers to same memory addresses, so when I run append 
 ```
 it will append to every array `[]` inside `counts`.
 
+Solution is to initialize with
+```python
+...
+        counts = [[] for _ in range(len(nums)+1)]  # default value be []
+...
+```
+
 # Neetcode Solution
 Uses bucket sort, can solve in `O(n)` time, my solution solved in it `O(n log n)` time.
 
