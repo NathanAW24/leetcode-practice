@@ -79,3 +79,27 @@ So here's the todo...
 3. Then insert the value inside the `counts` array, so if the key-value pair in `hash` is `{num_i: count}` do `counts[count] = [...<all-corresponding-num_i>...]`.
 4. Then iterate from the biggest index in `counts`, take only `k` elements.
 5. return this `k` elements
+
+Here's my interpretation on the solution, I write the code myself.
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # track for key (the num inside nums) : value (number of appearances)
+        hash = defaultdict(lambda: 0)  # default value be 0
+        counts = [[] for _ in range(len(nums)+1)]  # default value be []
+
+        for num in nums:
+            hash[num] += 1
+
+        for num, count in hash.items():
+            counts[count].append(num)
+
+        res = []
+        for i in range(len(nums), -1, -1):
+            # i start from n
+            # counts[i] is a list
+            for num in counts[i]:
+                res.append(num)
+                if len(res) == k:  # reaches k most freq element already
+                    return res
+```
