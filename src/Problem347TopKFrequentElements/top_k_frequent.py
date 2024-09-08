@@ -6,11 +6,27 @@ class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         # track for key (the num inside nums) : value (number of appearances)
         hash = defaultdict(lambda: 0)  # default value be 0
+        counts = [[]] * (len(nums)+1)  # default value be []
 
         for num in nums:
             hash[num] += 1
 
-        return sorted(hash.keys(), key=lambda hash_key: hash[hash_key], reverse=True)[0:k]
+        print(hash.items())
+        for num, count in hash.items():
+            print(count)
+            print(counts[count])
+            counts[count].append(num)
+            print(counts)
+
+        res = []
+        for i in range(len(nums), -1, -1):
+            # i start from n
+            # counts[i] is a list
+            for num in counts[i]:
+                res.append(num)
+
+        print(counts)
+        print(res)
 
 
 # test case 1

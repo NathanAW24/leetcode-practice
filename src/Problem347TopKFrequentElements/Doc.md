@@ -10,3 +10,65 @@ Using the line in
 ...
 ```
 We can sort `hash.keys()`, by calling the value `hash[hash_key]` is the value used to compare against each other.
+
+# Problems
+## Problem 1: Empty List Refers to Same Memory Address
+```python
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # track for key (the num inside nums) : value (number of appearances)
+        hash = defaultdict(lambda: 0)  # default value be 0
+        counts = [[]] * (len(nums)+1)  # default value be []
+
+        for num in nums:
+            hash[num] += 1
+
+        print(hash.items())
+        for num, count in hash.items():
+            print(count)
+            print(counts[count])
+            counts[count].append(num)
+            print(counts)
+
+        res = []
+        for i in range(len(nums), -1, -1):
+            # i start from n
+            # counts[i] is a list
+            for num in counts[i]:
+                res.append(num)
+
+        print(counts)
+        print(res)
+
+```
+
+When I do this, in this line
+```python
+...
+        counts = [[]] * (len(nums)+1)  # default value be []
+...
+```
+all the empty arrays `[]` refers to same memory addresses, so when I run append inside
+```python
+...
+        for num, count in hash.items():
+            print(count)
+            print(counts[count])
+            counts[count].append(num)
+            print(counts)
+...
+```
+it will append to every array `[]` inside `counts`.
+
+# Neetcode Solution
+Uses bucket sort, can solve in `O(n)` time, my solution solved in it `O(n log n)` time.
+
+Here's the drawing of the solution, the key here, is to have an array `counts` with index be frequency of appearance, and values be the list of elements which appears index-number of times. If the size of input elements is `n`, we only need to initialize the `counts` array with index `0` until `n` inclusive, as at most the same element could appear `n` times maximum.
+![alt text](image.png)
+
+So here's the todo...
+1. Initialize `counts` with elements being empty arrays `[]`.
+2. For each `num` in input `nums` do `hash[num] += 1`, basically record the number of appearances inside the `hash`
+3. Then insert the value inside the `counts` array, so if the key-value pair in `hash` is `{num_i: count}` do `counts[count] = [...<all-corresponding-num_i>...]`.
+4. Then iterate from the biggest index in `counts`, take only `k` elements.
+5. return this `k` elements
