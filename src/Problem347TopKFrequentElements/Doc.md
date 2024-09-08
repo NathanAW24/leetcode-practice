@@ -103,3 +103,5 @@ class Solution:
                 if len(res) == k:  # reaches k most freq element already
                     return res
 ```
+
+This runs in `O(n)` complexity.
