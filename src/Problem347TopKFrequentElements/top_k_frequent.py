@@ -6,7 +6,7 @@ class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         # track for key (the num inside nums) : value (number of appearances)
         hash = defaultdict(lambda: 0)  # default value be 0
-        counts = [[]] * (len(nums)+1)  # default value be []
+        counts = [[] for _ in range(len(nums)+1)]  # default value be []
 
         for num in nums:
             hash[num] += 1
@@ -24,9 +24,8 @@ class Solution:
             # counts[i] is a list
             for num in counts[i]:
                 res.append(num)
-
-        print(counts)
-        print(res)
+                if len(res) == k:  # reaches k most freq element already
+                    return res
 
 
 # test case 1
