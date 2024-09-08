@@ -10,10 +10,7 @@ class Solution:
         for num in nums:
             hash[num] += 1
 
-        sorted_key_value_pair = sorted(
-            hash.items(), key=lambda item: item[1], reverse=True)
-
-        return [sorted_key_value_pair[i][0] for i in range(0, k)]
+        return sorted(hash.keys(), key=lambda hash_key: hash[hash_key], reverse=True)[0:k]
 
 
 # test case 1
