@@ -63,3 +63,29 @@ Here's the TODO
 2. Start iterating inside `output = [...]` for calculating the `prefix`. For index `0`, since it doesn't have a prefix, we put the initial value `output[0] = prefix` which is 1. Then for subsequent index `>0` or `1, ..., n-1`, we have to update `prefix = prefix * nums[i-1]`, means it now contains the multiplied value of the previous `prefix` as well as at `i-1`. Then, do `output[i] = prefix`.
 3. Initialize `postfix = 1`, this will act similarly to `prefix` in the previous iteration.
 4. Start iterating (from the back, index `n-1`) inside `output = [1, 1 * nums[0], 1 * nums[0] * nums[1], ..., 1 * nums[0] * ... * nums[i-1]]`. KEEP IN MIND `output` already has the prefix multiplication values. For index `n-1`, doesn't have a postfix, so we use initial value `output[n-1] = output[n-1] * postfix (which is 1)`. Then for subsequent index `<n-1`, we update `postfix = postfix * nums[i+1]`. Then, we do `output[i] = output[i]*postfix`. With this, `output` will contain the multiplication values of all elements except for `i`.
+
+Visualize solution
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+Here's the code
+```python
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        output = [1] * n
+
+        prefix = 1
+        for i in range(n):
+            if i > 0:
+                prefix = prefix * nums[i-1]
+            output[i] = output[i] * prefix
+
+        postfix = 1
+        for i in range(n-1, -1, -1):
+            if i < n-1:
+                postfix = postfix * nums[i+1]
+            output[i] = output[i] * postfix
+
+        return output
+```
