@@ -52,3 +52,14 @@ class Solution:
 ```
 
 This solution runs, but can still be optimized for `O(1)` memory.
+
+## Solution V2
+Store the `prefix` and `postfix` in the form of an `int`. We will run two rounds from index `0` to `n`, and from `n` to `0`. For ascending index, we store `prefix`. For descending index, we store `postfix`.
+
+Keep in mind that doing this is similar to doing the `prefix` and `postfix` array, but instead of calculating both `prefix` and `postfix` then multiplying it in the `output`, we just need to directly keep the `prefix` multiplication result inside the `output` directly, while doing another round of iteration again for the `postfix` multiplication.
+
+Here's the TODO
+1. Initialize `prefix = 1`, this will be the value that stores the `prefix` multiplication values at each iteration `i`
+2. Start iterating inside `output = [...]` for calculating the `prefix`. For index `0`, since it doesn't have a prefix, we put the initial value `output[0] = prefix` which is 1. Then for subsequent index `>0` or `1, ..., n-1`, we have to update `prefix = prefix * nums[i-1]`, means it now contains the multiplied value of the previous `prefix` as well as at `i-1`. Then, do `output[i] = prefix`.
+3. Initialize `postfix = 1`, this will act similarly to `prefix` in the previous iteration.
+4. Start iterating (from the back, index `n-1`) inside `output = [1, 1 * nums[0], 1 * nums[0] * nums[1], ..., 1 * nums[0] * ... * nums[i-1]]`. KEEP IN MIND `output` already has the prefix multiplication values. For index `n-1`, doesn't have a postfix, so we use initial value `output[n-1] = output[n-1] * postfix (which is 1)`. Then for subsequent index `<n-1`, we update `postfix = postfix * nums[i+1]`. Then, we do `output[i] = output[i]*postfix`. With this, `output` will contain the multiplication values of all elements except for `i`.

@@ -4,30 +4,22 @@ from collections import defaultdict
 
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        prefix = [1 for _ in range(len(nums))]
-        postfix = [1 for _ in range(len(nums))]
+        n = len(nums)
+        output = [1] * n
 
-        for i in range(len(nums)):
-            if i > 0:  # after first element
-                prefix[i] = prefix[i-1] * nums[i]
-            else:
-                prefix[i] = nums[i]
+        prefix = 1
+        for i in range(n):
+            if i > 0:
+                prefix = prefix * nums[i-1]
+            output[i] = output[i] * prefix
 
-        for i in range(len(nums)-1, -1, -1):
-            if i >= len(nums) - 1:
-                postfix[i] = nums[i]
-            else:
-                postfix[i] = nums[i] * postfix[i+1]
+        postfix = 1
+        for i in range(n-1, -1, -1):
+            if i < n-1:
+                postfix = postfix * nums[i+1]
+            output[i] = output[i] * postfix
 
-        res = [1 for _ in range(len(nums))]
-        for i in range(len(nums)):
-            if i <= 0:
-                res[i] = postfix[i+1]
-            elif i >= len(nums)-1:
-                res[i] = prefix[i-1]
-            else:
-                res[i] = prefix[i-1] * postfix[i+1]
-        return res
+        return output
 
 
 # test case 1
