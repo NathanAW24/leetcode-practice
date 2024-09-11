@@ -21,7 +21,7 @@ Here's the TODO on this
         - NO → CONTINUE dunnid to do anything
 
 
-This is my code interpretation for this
+This is my code interpretation for this code.
 ```python
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
