@@ -15,10 +15,10 @@ Here's the TODO on this
 1. Create `numSet = set(nums)`, transforming `nums` to a `set`
 2. for each `num` in `nums`
     - if `num` is start of a sequence (has no left neighbour, `num-1` not in `numSet`)
-        - YES → Check, if `num` not end of sequence (has left neighbour, `num+1` in `numSet`)
-            - YES → add `+1` to `length`, REPEAT check if `num+1` not end of sequence (USE WHILE LOOP)
-            - NO → compare with previously stored `maxlength`, assign `maxlength = max(length, maxlength)`
-        - NO → CONTINUE dunnid to do anything
+        - YES &rarr; Check, if `num` not end of sequence (has left neighbour, `num+1` in `numSet`)
+            - YES &rarr; add `+1` to `length`, REPEAT check if `num+1` not end of sequence (USE WHILE LOOP)
+            - NO &rarr; compare with previously stored `maxlength`, assign `maxlength = max(length, maxlength)`
+        - NO &rarr; CONTINUE dunnid to do anything
 
 
 This is my code interpretation for this code.
