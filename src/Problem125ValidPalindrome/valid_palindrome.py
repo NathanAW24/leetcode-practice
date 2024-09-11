@@ -12,8 +12,6 @@ class Solution:
                 continue
 
             if s[left_pointer].lower() != s[right_pointer].lower():
-                print(left_pointer, s[left_pointer],
-                      right_pointer, s[right_pointer])
                 return False
 
             left_pointer += 1
