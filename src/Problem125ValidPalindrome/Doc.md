@@ -62,3 +62,28 @@ class Solution:
 ```
 
 With this, we made it check again if the next character is also `isalnum()` or not, this will truly only allow alphanumeric characters to be checked.
+
+# Neetcode Solution
+Same logic but slightly different execution.
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        left_pointer = 0
+        right_pointer = len(s)-1
+
+        while left_pointer < right_pointer:
+            while left_pointer < right_pointer and not s[left_pointer].isalnum():
+                left_pointer += 1
+            while right_pointer > left_pointer and not s[right_pointer].isalnum():
+                right_pointer -= 1
+
+            if s[left_pointer].lower() != s[right_pointer].lower():
+                return False
+
+            left_pointer += 1
+            right_pointer -= 1
+
+        return True
+```
+
+Instead of using `if` statements to check whether it is alphanumerical, which makes it need to re-run the outer `while` loop from the very beginning, this one captures the need to re-run the `isalnum()` check within an inner `while` loop itself.
