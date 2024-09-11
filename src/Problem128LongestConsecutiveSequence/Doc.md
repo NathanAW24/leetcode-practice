@@ -40,3 +40,24 @@ class Solution:
 
         return maxlength
 ```
+
+Neetcode's solution is more similar to this
+```python
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        numSet = set(nums)
+        maxlength = 0
+
+        for num in nums:
+            if num-1 not in numSet:  # start of sequence
+                length = 1
+                while num+length in numSet:  # not end of sequence
+                    length += 1
+                # reached the end of sequence, whether is it the same number or not
+                maxlength = max(length, maxlength)
+            # num-1 in numSet means it is not start of sequence and we can ignore it
+
+        return maxlength
+```
+
+This is a faster code as we don't need to reassign the `num` with `num=num+1`, we can just check if `num+length` is within `numSet`, which is similar to checking if `num+1` is within `numSet`, and doing `num=num+1` later.

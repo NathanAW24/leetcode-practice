@@ -9,9 +9,8 @@ class Solution:
         for num in nums:
             if num-1 not in numSet:  # start of sequence
                 length = 1
-                while num+1 in numSet:  # not end of sequence
+                while num+length in numSet:  # not end of sequence
                     length += 1
-                    num = num+1
                 # reached the end of sequence, whether is it the same number or not
                 maxlength = max(length, maxlength)
             # num-1 in numSet means it is not start of sequence and we can ignore it
