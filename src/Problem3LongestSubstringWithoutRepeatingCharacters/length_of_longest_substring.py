@@ -1,4 +1,4 @@
-class Solution:  # NOT MOST OPTIMIZED, BUT AC IN 8 mins
+class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         hash = set()
         left_pointer = 0
