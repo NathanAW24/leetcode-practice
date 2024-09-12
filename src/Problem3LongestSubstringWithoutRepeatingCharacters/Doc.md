@@ -86,3 +86,46 @@ Here's the TODO
     - Previous step will remove all duplicates, now after removing all duplicates, we only need to add `s[right_pointer]` to the substring (add inside `hash`), and `length+=1`
     - Then compare for `maxlength = max(maxlenth, length)`
 3. return `maxlength` at the end
+
+This is my interpretation of neetcode solution
+```python
+class Solution:  # NOT MOST OPTIMIZED, BUT AC IN 8 mins
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        hash = set()
+        left_pointer = 0
+        maxlength = 0
+        length = 0
+
+        for right_pointer in range(len(s)):
+            while s[right_pointer] in hash:
+                hash.remove(s[left_pointer])
+                left_pointer += 1
+                length -= 1
+
+            hash.add(s[right_pointer])
+            length += 1
+            maxlength = max(maxlength, length)
+
+        return maxlength
+```
+
+Neetcode's solution is similar, but slightly different in a way, as he does not keep track of `length` variable, he calculates the length on each iteration with `right_pointer + 1 - left_pointer`, which is the same as `<length-of-string-from-0-to-right_pointer> - <length-of-string-before-sliding-window>`, this gives the same length of sliding window substring.
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        hash = set()
+        left_pointer = 0
+        maxlength = 0
+
+        for right_pointer in range(len(s)):
+            while s[right_pointer] in hash:
+                hash.remove(s[left_pointer])
+                left_pointer += 1
+
+            hash.add(s[right_pointer])
+            maxlength = max(maxlength, right_pointer + 1 - left_pointer)
+
+        return maxlength
+```
+
+Overall similar logic.
