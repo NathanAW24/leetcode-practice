@@ -157,3 +157,64 @@ class Solution:
 
         return recursion(nums, target, sum)
 ```
+
+## Problem 3: Function looks nasty AF NGL
+This is the initial way it looks
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+
+        sum = 0
+        hash = {}  # contains {sum: counter}
+
+        def recursion(nums, target, sum):  # return integer
+            if sum in hash:
+                return hash[sum]
+            elif sum == target:
+                # end recursion
+                return 1
+            elif sum > target:
+                # end recursion
+                return 0
+            else:
+                counter = 0
+                # all addition procedure for the `counter` lies here
+                for i in range(len(nums)):
+                    counter += recursion(nums, target, sum + nums[i])
+
+                # it is finished adding all values for `counter`
+                hash[sum] = counter
+                return counter  # sum < target
+
+        return recursion(nums, target, sum)
+```
+
+Just need to make it neater by separating both functions
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+
+        sum = 0
+        hash = {}  # contains {sum: counter}
+
+        return self.recursion(nums, target, sum, hash)
+
+    def recursion(self, nums, target, sum, hash):  # return integer
+        if sum in hash:
+            return hash[sum]
+        elif sum == target:
+            # end recursion
+            return 1
+        elif sum > target:
+            # end recursion
+            return 0
+        else:
+            counter = 0
+            # all addition procedure for the `counter` lies here
+            for i in range(len(nums)):
+                counter += self.recursion(nums, target, sum + nums[i], hash)
+
+            # it is finished adding all values for `counter`
+            hash[sum] = counter
+            return counter  # sum < target
+```

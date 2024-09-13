@@ -7,26 +7,26 @@ class Solution:
         sum = 0
         hash = {}  # contains {sum: counter}
 
-        def recursion(nums, target, sum):  # return integer
-            if sum in hash:
-                return hash[sum]
-            elif sum == target:
-                # end recursion
-                return 1
-            elif sum > target:
-                # end recursion
-                return 0
-            else:
-                counter = 0
-                # all addition procedure for the `counter` lies here
-                for i in range(len(nums)):
-                    counter += recursion(nums, target, sum + nums[i])
+        return self.recursion(nums, target, sum, hash)
 
-                # it is finished adding all values for `counter`
-                hash[sum] = counter
-                return counter  # sum < target
+    def recursion(self, nums, target, sum, hash):  # return integer
+        if sum in hash:
+            return hash[sum]
+        elif sum == target:
+            # end recursion
+            return 1
+        elif sum > target:
+            # end recursion
+            return 0
+        else:
+            counter = 0
+            # all addition procedure for the `counter` lies here
+            for i in range(len(nums)):
+                counter += self.recursion(nums, target, sum + nums[i], hash)
 
-        return recursion(nums, target, sum)
+            # it is finished adding all values for `counter`
+            hash[sum] = counter
+            return counter  # sum < target
 
 
 nums, target = [1, 2, 3], 4
