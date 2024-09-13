@@ -5,28 +5,24 @@ class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
 
         sum = 0
-        hash = {}  # contains {sum: counter}
+        hash = {}
 
         return self.recursion(nums, target, sum, hash)
 
-    def recursion(self, nums, target, sum, hash):  # return integer
+    def recursion(self, nums, target, sum, hash):
         if sum in hash:
             return hash[sum]
         elif sum == target:
-            # end recursion
             return 1
         elif sum > target:
-            # end recursion
             return 0
         else:
             counter = 0
-            # all addition procedure for the `counter` lies here
             for i in range(len(nums)):
                 counter += self.recursion(nums, target, sum + nums[i], hash)
 
-            # it is finished adding all values for `counter`
             hash[sum] = counter
-            return counter  # sum < target
+            return counter
 
 
 nums, target = [1, 2, 3], 4
