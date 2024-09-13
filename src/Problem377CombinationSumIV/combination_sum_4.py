@@ -5,9 +5,12 @@ class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
 
         sum = 0
+        hash = {}  # contains {sum: counter}
 
         def recursion(nums, target, sum):  # return integer
-            if sum == target:
+            if sum in hash:
+                return hash[sum]
+            elif sum == target:
                 # end recursion
                 return 1
             elif sum > target:
@@ -20,6 +23,7 @@ class Solution:
                     counter += recursion(nums, target, sum + nums[i])
 
                 # it is finished adding all values for `counter`
+                hash[sum] = counter
                 return counter  # sum < target
 
         return recursion(nums, target, sum)

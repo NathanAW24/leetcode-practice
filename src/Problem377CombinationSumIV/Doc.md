@@ -100,3 +100,60 @@ class Solution:
 
         return recursion(nums, target, sum)
 ```
+
+## Problem 2: TLE, need hashing
+Before I hash
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+
+        sum = 0
+
+        def recursion(nums, target, sum):  # return integer
+            if sum == target:
+                # end recursion
+                return 1
+            elif sum > target:
+                # end recursion
+                return 0
+            else:
+                counter = 0
+                # all addition procedure for the `counter` lies here
+                for i in range(len(nums)):
+                    counter += recursion(nums, target, sum + nums[i])
+
+                # it is finished adding all values for `counter`
+                return counter  # sum < target
+
+        return recursion(nums, target, sum)
+```
+
+Here is the new code with hashing, this passes leetcode solution.
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+
+        sum = 0
+        hash = {}  # contains {sum: counter}
+
+        def recursion(nums, target, sum):  # return integer
+            if sum in hash:
+                return hash[sum]
+            elif sum == target:
+                # end recursion
+                return 1
+            elif sum > target:
+                # end recursion
+                return 0
+            else:
+                counter = 0
+                # all addition procedure for the `counter` lies here
+                for i in range(len(nums)):
+                    counter += recursion(nums, target, sum + nums[i])
+
+                # it is finished adding all values for `counter`
+                hash[sum] = counter
+                return counter  # sum < target
+
+        return recursion(nums, target, sum)
+```
