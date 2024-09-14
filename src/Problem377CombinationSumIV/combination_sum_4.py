@@ -3,14 +3,12 @@ from typing import List
 
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
-        hash = {0: 1}  # base case listed inside
+        hash = {0: 1}
 
         for leftover_sum in range(1, target+1):
             hash[leftover_sum] = 0
 
-            # subtract it with all the possible value in `nums`
             for subtraction_num in nums:
-                # new_leftover_sum contains smaller values, which has been previously stored, or is negative (no need to put inside)
                 new_leftover_sum = leftover_sum - subtraction_num
                 if new_leftover_sum >= 0:
                     hash[leftover_sum] += hash[new_leftover_sum]
