@@ -3,26 +3,20 @@ from typing import List
 
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
+        hash = {0: 1}  # base case listed inside
 
-        sum = 0
-        hash = {}
+        for leftover_sum in range(1, target+1):
+            hash[leftover_sum] = 0
 
-        return self.recursion(nums, target, sum, hash)
+            # subtract it with all the possible value in `nums`
+            for subtraction_num in nums:
+                new_leftover_sum = leftover_sum - subtraction_num
+                if new_leftover_sum < 0:  # base case 1
+                    hash[new_leftover_sum] = 0
+                elif new_leftover_sum >= 0:
+                    hash[leftover_sum] += hash[new_leftover_sum]
 
-    def recursion(self, nums, target, sum, hash):
-        if sum in hash:
-            return hash[sum]
-        elif sum == target:
-            return 1
-        elif sum > target:
-            return 0
-        else:
-            counter = 0
-            for i in range(len(nums)):
-                counter += self.recursion(nums, target, sum + nums[i], hash)
-
-            hash[sum] = counter
-            return counter
+        return hash[target]
 
 
 nums, target = [1, 2, 3], 4

@@ -218,3 +218,69 @@ class Solution:
             hash[sum] = counter
             return counter  # sum < target
 ```
+
+## Problem 4: incorrect logic, after applying neetcode solution
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        hash = {0: 1}  # base case listed inside
+
+        for leftover_sum in range(1, target+1):
+            hash[leftover_sum] = 0
+
+            # subtract it with all the possible value in `nums`
+            for subtraction_num in nums:
+                new_leftover_sum = leftover_sum - subtraction_num
+                if new_leftover_sum < 0:  # base case 1
+                    hash[new_leftover_sum] = 0
+                elif new_leftover_sum == 0:
+                    hash[leftover_sum] += hash[new_leftover_sum]
+
+        return hash[target]
+```
+
+Based on ChatGPT, the mistake here is.
+
+1. Only Considering new_leftover_sum == 0:
+
+```python
+                elif new_leftover_sum == 0:
+                    hash[leftover_sum] += hash[new_leftover_sum]
+```
+This condition only adds to hash[leftover_sum] when new_leftover_sum is exactly zero.
+It ignores all other valid sums where new_leftover_sum is greater than zero.
+
+# Neetcode Solution
+Uses bottom-up dp, instead of top-down like my method. Having a cache `hash` with values of `{ <what-is-remaining-until-target> : <counter-of-number-of-ways-to-get-to-target-from-sum>}`
+
+The caching concept is here, what to cache.
+![alt text](image.png)
+
+Logic for the base case, and how we work around the logic. Base case being `hash[0] = 1`, if we need 0 more sum to get to target, means we reached `target` already, and showing that there's `1` way to get there. Another base case similar to my previous code is, `hash[<0] = 0` as this means that this sum doesn't add up to `target`. 
+
+`hash[value] = x` in this case means that there are `x` ways to get to `target` from `value` given possible summations of every number available in `nums`.
+
+![alt text](image-1.png)
+
+With the given case in the picture, here is the breakdown
+```
+hash[4] = hash[4-3] + hash[4-2] + hash[4-1]
+        = hash[1] + hash[2] + hash[3]
+        = ... calculate each one
+
+hash[1] = hash[1-1] + hash[1-2] + hash[1-3]
+        = hash[0] <base-case> + hash[-1] + hash hash[-2]
+        = 1 + 0 + 0 = 1
+
+hash[2] = hash[2-1] + hash[2-2] + hash[2-3]
+        = hash[0] <base-case> + hash[1] <calculated-before> + hash[-1]
+        = 1 + 1 + 0 = 2
+
+hash[3] = hash[3-1] + hash[3-2] + hash[3-3]
+        = hash[2] <calculated-before> + hash[1] <calculated-before> + hash[0] <base-case>
+        = 2 + 1 + 1 = 4
+
+hash[4] = 1 + 2 + 4 = 7 --> ANSWER
+```
+
+We should build up the values from smallest key here, which is `1`.
