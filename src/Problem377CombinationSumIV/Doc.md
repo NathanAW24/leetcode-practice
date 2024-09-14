@@ -241,7 +241,7 @@ class Solution:
 
 Based on ChatGPT, the mistake here is.
 
-1. Only Considering new_leftover_sum == 0:
+Only Considering `new_leftover_sum == 0`
 
 ```python
                 elif new_leftover_sum == 0:
@@ -249,6 +249,26 @@ Based on ChatGPT, the mistake here is.
 ```
 This condition only adds to hash[leftover_sum] when new_leftover_sum is exactly zero.
 It ignores all other valid sums where new_leftover_sum is greater than zero.
+
+Then we also do not need to store negative values of `leftover_sum` here, as we are just adding `0`.
+
+```python
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        hash = {0: 1}  # base case listed inside
+
+        for leftover_sum in range(1, target+1):
+            hash[leftover_sum] = 0
+
+            # subtract it with all the possible value in `nums`
+            for subtraction_num in nums:
+                # new_leftover_sum contains smaller values, which has been previously stored, or is negative (no need to put inside)
+                new_leftover_sum = leftover_sum - subtraction_num
+                if new_leftover_sum >= 0:
+                    hash[leftover_sum] += hash[new_leftover_sum]
+
+        return hash[target]
+```
 
 # Neetcode Solution
 Uses bottom-up dp, instead of top-down like my method. Having a cache `hash` with values of `{ <what-is-remaining-until-target> : <counter-of-number-of-ways-to-get-to-target-from-sum>}`

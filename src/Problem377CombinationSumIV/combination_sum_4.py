@@ -10,10 +10,9 @@ class Solution:
 
             # subtract it with all the possible value in `nums`
             for subtraction_num in nums:
+                # new_leftover_sum contains smaller values, which has been previously stored, or is negative (no need to put inside)
                 new_leftover_sum = leftover_sum - subtraction_num
-                if new_leftover_sum < 0:  # base case 1
-                    hash[new_leftover_sum] = 0
-                elif new_leftover_sum >= 0:
+                if new_leftover_sum >= 0:
                     hash[leftover_sum] += hash[new_leftover_sum]
 
         return hash[target]
