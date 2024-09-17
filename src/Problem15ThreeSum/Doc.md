@@ -115,7 +115,7 @@ class Solution:
         return [list(sorted_triplet) for sorted_triplet in result]
 ```
 
-Skip to neetcode solution
+Skip to neetcode solution, logic is very wrong from the beginning already
 
 # Neetcode Solution
 The key here is to sort `nums`, then iterate over the array once, for every element in the `nums` array. Then use the current `num`, then do two sum solution with two pointers `left` and `right` (since the array is sorted).
