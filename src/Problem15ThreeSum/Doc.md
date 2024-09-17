@@ -118,3 +118,9 @@ class Solution:
 Skip to neetcode solution
 
 # Neetcode Solution
+The key here is to sort `nums`, then iterate over the array once, for every element in the `nums` array. Then use the current `num`, then do two sum solution with two pointers `left` and `right` (since the array is sorted).
+
+Here's the todo
+1. sort `nums` 
+2. Iterate over `nums` inside, for each `num`
+3. check if  
