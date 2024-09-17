@@ -29,12 +29,13 @@ class Solution:
                 else:  # exactly eq to `target` `0`
                     res.append([num, nums[left], nums[right]])
 
-                    left += 1  # move `left` pointer right, to avoid finding duplicates
-                    while nums[left] == nums[left-1] and left < right:
+                    right -= 1  # move `left` pointer right, to avoid finding duplicates
+                    while nums[right] == nums[right+1] and left < right:
                         # similar to check in the beginning
-                        # to consider the case for [..., -3, -3,...], duplicate values being
+                        # to consider the case for [..., -3, -3,...], duplicate values
                         #                                     ^
-                        left += 1
+                        # skip all duplicate values here
+                        right -= 1
 
         return res
 
