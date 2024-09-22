@@ -57,3 +57,23 @@ Here's the TODOs, my interpretation
     - move `right -= 1`
     - if same `height[left]==height[right]` value, do whichever is fine
 5. return `max_area`
+
+```python
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        max_area = 0
+        n = len(height)
+        right = n-1
+        left = 0
+
+        while left < right:
+            max_area = max(
+                min(height[left], height[right]) * (right-left), max_area)
+
+            if height[left] <= height[right]:  # right as anchor
+                left += 1
+            else:  # left as anchor
+                right -= 1
+
+        return max_area
+```
