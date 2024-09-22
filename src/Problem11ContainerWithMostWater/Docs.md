@@ -38,3 +38,22 @@ This problem requires two pointers, `left=0` and `right=n-1`, the main loop woul
 Two Pointers Generalization:
 - **Comparing elements or combinations**: You are comparing two elements or values that may be far apart and adjusting them based on conditions.
 - **Optimizing combinations of two elements**: Trying to find optimal result from two different elements, and moving one pointer inward won't affect feasibility of the other. In the beginning might seem to need all combinations of the elements, but there's a logical loophole that can be used along with the two pointer solution.
+
+# Neetcode Solution
+Neetcode's solution start the pointer at `left` and `right` at opposite ends, `left=0` and `right=n-1`. Keep in mind that `max_area` is calculated by `<minimal-height-between-left-and-right> * <distance-between-left-and-right>` or in python `min(height[left], height[right]) * (right - left)`.
+
+Here's the loophole inside the logical way of thinking, the value given an array `height`, and pointers `left` < `right`, with `height[left]` < `height[right]`. Assuming we pick `height[left]`, the smaller one, as the anchor. Every value to the left of `right` pointer `height[right-i]`, will be limited by `height[left]`, because...
+1. `<distance-between-left-and-right>` becomes smaller &rarr; reducing potential `max_area` value
+2. `<minimal-height-between-left-and-right>` is limited by `height[left]` if `height[right-i]` > `height[left]`, and it becomes smaller if `height[right-i]` < `height[left]` &rarr; all the `max_area` values in between will always be smaller.
+
+Thus, we can't choose the smaller between `height[left]` and `height[right]`, as the anchor. We will choose `height[right]` (since potential `max_area`s is there), or whichever is greater, as the anchor in hopes of finding potentially greater `max_area` in between, or finding a significantly greater `height[left+i]` such that the smaller `<distance-between-left-and-right>` can be overcame to get larger `max_area`.
+
+Here's the TODOs, my interpretation
+1. instantiate `left=0` and `right=n-1` pointer, `max_area=0`
+2. while loop for `left < right`
+3. calculate new `max_area`, overwrite previous `max_area` if new one is larger
+4. Choose anchor --> larger between `height[left]` and `height[right]`, depending on result
+    - move `left += 1`
+    - move `right -= 1`
+    - if same `height[left]==height[right]` value, do whichever is fine
+5. return `max_area`
