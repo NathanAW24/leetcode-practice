@@ -6,6 +6,8 @@ class Solution:
         l, r = 0, 1
         hash = defaultdict(int)  # hash contains { letter : appearance }
 
+        print(s)
+
         max_len = 0
 
         if len(s) == 1:
@@ -18,17 +20,18 @@ class Solution:
 
         while r <= len(s)-1:
             hash[r] += 1
+
             values_arr = hash.values()
 
             # hitung `total(hash) - hash[max_val]`
-            k_used = sum(values_arr) - max(values_arr)
+            k_used = r + l - 1 - max(values_arr)
 
             while k_used > k:
+                print(l, s[l])
                 hash[s[l]] -= 1
                 l += 1
 
             r += 1
-
             max_len = max(max_len, r + 1 - l)
 
         return max_len
