@@ -94,3 +94,143 @@ AABABBA
   l   r
 hash = {A:2, B:3}, k_used = 2 > k --> need to change 2 A's to B's
 max hash --> 
+
+# Problems
+## Problem 1: Handle hash incorrectly
+In this line
+```python
+...
+        hash[l] += 1
+...
+```
+
+I am using the index to put into the hash, meanwhile I should be using `s[l]`. Happens on other instances as well for `r` also.
+```python
+from collections import defaultdict
+
+
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l, r = 0, 1
+        hash = defaultdict(int)  # hash contains { letter : appearance }
+
+        max_len = 0
+
+        if len(s) == 1:
+            return 1
+
+        # first set of characters input to hash
+        hash[l] += 1
+
+        k_used = 0
+
+        while r < len(s)-1:
+            hash[r] += 1
+            values_arr = hash.values()
+
+            # hitung `total(hash) - hash[max_val]`
+            k_used = sum(values_arr) - max(values_arr)
+
+            while k_used > k:
+                hash[l] -= 1
+                l += 1
+                hash[l] += 1
+
+            r += 1
+
+            max_len = max(max_len, r + 1 - l)
+
+        return max_len
+```
+
+Fix it to this
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l, r = 0, 1
+        hash = defaultdict(int)  # hash contains { letter : appearance }
+
+        max_len = 0
+
+        if len(s) == 1:
+            return 1
+
+        # first set of characters input to hash
+        hash[s[l]] += 1
+
+        k_used = 0
+
+        while r <= len(s)-1:
+            hash[r] += 1
+            values_arr = hash.values()
+
+            # hitung `total(hash) - hash[max_val]`
+            k_used = sum(values_arr) - max(values_arr)
+
+            while k_used > k:
+                hash[s[l]] -= 1
+                l += 1
+                hash[s[l]] += 1
+
+            r += 1
+
+            max_len = max(max_len, r + 1 - l)
+
+        return max_len
+```
+
+## Problem 2: Redundant addtition of hash
+This section
+```python
+...
+            while k_used > k:
+                hash[s[l]] -= 1
+                l += 1
+                hash[s[l]] += 1
+...
+```
+
+within
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l, r = 0, 1
+        hash = defaultdict(int)  # hash contains { letter : appearance }
+
+        max_len = 0
+
+        if len(s) == 1:
+            return 1
+
+        # first set of characters input to hash
+        hash[s[l]] += 1
+
+        k_used = 0
+
+        while r <= len(s)-1:
+            hash[r] += 1
+            values_arr = hash.values()
+
+            # hitung `total(hash) - hash[max_val]`
+            k_used = sum(values_arr) - max(values_arr)
+
+            while k_used > k:
+                hash[s[l]] -= 1
+                l += 1
+                hash[s[l]] += 1
+
+            r += 1
+
+            max_len = max(max_len, r + 1 - l)
+
+        return max_len
+```
+
+Must be changed to remove
+```python
+...
+                hash[s[l]] += 1
+...
+```
+
+As this addition of that specific letter is added by the `s[r]` already.

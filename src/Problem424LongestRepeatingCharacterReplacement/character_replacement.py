@@ -12,11 +12,11 @@ class Solution:
             return 1
 
         # first set of characters input to hash
-        hash[l] += 1
+        hash[s[l]] += 1
 
         k_used = 0
 
-        while r < len(s)-1:
+        while r <= len(s)-1:
             hash[r] += 1
             values_arr = hash.values()
 
@@ -24,9 +24,8 @@ class Solution:
             k_used = sum(values_arr) - max(values_arr)
 
             while k_used > k:
-                hash[l] -= 1
+                hash[s[l]] -= 1
                 l += 1
-                hash[l] += 1
 
             r += 1
 
