@@ -19,7 +19,7 @@ class Solution:
         k_used = 0
 
         while r <= len(s)-1:
-            hash[r] += 1
+            hash[s[r]] += 1
 
             # hitung `total(hash) - hash[max_val]`
             k_used = r - l + 1 - max(hash.values())
@@ -30,8 +30,8 @@ class Solution:
                 l += 1
                 k_used = r - l + 1 - max(hash.values())
 
-            r += 1
             max_len = max(max_len, r - l + 1)
+            r += 1
 
         return max_len
 

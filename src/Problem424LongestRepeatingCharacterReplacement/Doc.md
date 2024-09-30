@@ -392,3 +392,6 @@ class Solution:
 
         return max_len
 ```
+
+## Probelm 6: Gak teliti 
+fix `hash[r]` to `hash[s[r]]`
