@@ -11,13 +11,13 @@ class Solution:
                 stack.append(p)
             # the rest are closing parentheses
             elif p == ")":
-                if not stack and stack.pop() != "(":
+                if not stack or stack.pop() != "(":
                     return False
             elif p == "]":
-                if not stack and stack.pop() != "[":
+                if not stack or stack.pop() != "[":
                     return False
             elif p == "}":
-                if not stack and stack.pop() != "{":
+                if not stack or stack.pop() != "{":
                     return False
 
         return True if not stack else False
