@@ -6,20 +6,18 @@ class Solution:
             return False
 
         for p in s:
-            stack.append(p)
-            print(stack)
-
-            if p == ")":
-                stack.pop()
-                if stack.pop() != "(":
+            if p in "({[":
+                # opening parentheses
+                stack.append(p)
+            # the rest are closing parentheses
+            elif p == ")":
+                if not stack and stack.pop() != "(":
                     return False
             elif p == "]":
-                stack.pop()
-                if stack.pop() != "[":
+                if not stack and stack.pop() != "[":
                     return False
             elif p == "}":
-                stack.pop()
-                if stack.pop() != "{":
+                if not stack and stack.pop() != "{":
                     return False
 
         return True if not stack else False
