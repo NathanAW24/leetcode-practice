@@ -9,6 +9,7 @@ class Solution:
         print(s)
 
         max_len = 0
+        max_count = 0
 
         if len(s) == 1:
             return 1
@@ -22,13 +23,14 @@ class Solution:
             hash[s[r]] += 1
 
             # hitung `total(hash) - hash[max_val]`
-            k_used = r - l + 1 - max(hash.values())
+            max_count = max(max_count, hash[s[r]])
+            k_used = r - l + 1 - max_count
 
             while k_used > k:
-                print(l, s[l])
+                brp_kali_masuk += 1
                 hash[s[l]] -= 1
                 l += 1
-                k_used = r - l + 1 - max(hash.values())
+                k_used = r - l + 1 - max_count
 
             max_len = max(max_len, r - l + 1)
             r += 1

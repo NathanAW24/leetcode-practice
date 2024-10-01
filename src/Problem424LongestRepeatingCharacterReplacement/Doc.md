@@ -433,3 +433,174 @@ class Solution:
 
         return max_len
 ```
+
+# Neetcode Solution
+So basically neetcode logic and mine is the same already. With mainly moving the `r` pointer, and only moving the `l` pointer when `<number-of-words-to-replace> > k`, or here it is `k_used`. But, to optimize speed and memory for `k_used`, we do not need to count the `max(hash.values())`. This operation itself makes it complex in memory and space.
+
+## How do we optimize for `max(hash.values())`?
+Instead of counting for `max(hash.values())`, we just need to count the `<maximum-count-of-identical-letters-ever-seen-in-the-loop>` denoted by `max_count` (or `maxf` in neetcode's solution), instead of `<maximum-count-of-identical-letters-within-current-hash>` denoted by `max(hash.values())`.
+
+We don't need to re-scan the entire `hash` to find which has the highest `count` or frequency in each iteration, it is `O(26)`.
+
+Result would only be maximized as we find a new max frequency `max_count`. If we were to find a new `max_len` within the new string `s`, we would need to find a new `max_count` which will then maximize the `max_len` as well. 
+
+For example (with `k=1`), when the substring in the window is `"AABAA"`, then `max_count` is `4`. If we find another case where `"ABAA"` for some reason, the `max(hash.values())` would give `3`, but the potential substring here, pasti bukan substring paling panjang, that can update `max_len`, as the `max_len` will be equivalent to `max(hash.values()) + k` giving `5`, padahal previous iteration ada `6`. That means, these cases where `max(hash.values())` decrease, can be skipped. The next possible substring that can update `max_len` needs to at least have `max(hash.values())` to be `> 4`, then can lebih besar dari `max_len`, yang tadinya `6` jadi `> 6`. 
+
+So what we do here is just keep a variable `max_count` to keep track of `<maximum-count-of-identical-letters-ever-seen-in-the-loop>`, ever seen by all the substrings, previously appointed as the longest, with `max_len`. We do this by `max_count = max(max_count, hash[s[r]])`, as every time we add a new `s[r]`, letter with `r` pointer, we might be finding a new `max_count`, just from this new appointed substring from `l` to `r` inclusively.
+
+Then `k_used > k` accordingly will skip some of the substrings that are confirm not longer than `max_len`.
+
+## Concrete example of the last statement
+### With `max(hash.values())`, `s="AAABB..."`, `k=1`
+
+```
+AAABB...
+^^
+lr
+```
+
+```
+AAABB...
+^ ^
+l r
+```
+
+```
+AAABB...
+^  ^
+l  r
+```
+
+```
+AAABB...
+^   ^
+l   r
+```
+This will trigger `length - max(hash.values()) > k`, and move `l` pointer
+
+```
+AAABB...  
+ ^  ^
+ l  r
+```
+
+```
+AAABB...  
+  ^ ^
+  l r
+```
+until it reaches this point, then continue doing the normal calculation again, moving `r` pointer.
+
+### With `max_count`, `s="AAABB..."`, `k=1`
+```
+AAABB...
+^^
+lr
+```
+`max_count` update to `2`
+
+```
+AAABB...
+^ ^
+l r
+```
+`max_count` update to `3`
+
+```
+AAABB...
+^  ^
+l  r
+```
+`max_count` stays at `3`
+
+```
+AAABB...
+^   ^
+l   r
+```
+`max_count` stays at `3`
+This will trigger `length - max_count > k` (`5-3 > 1`), and move `l` pointer.
+
+```
+AAABB...  
+ ^  ^
+ l  r
+```
+However, it will stop here, since `length - max_count > k` (`4-3 !> 1`) no longer triggered, and it will continue the normal calculation again, moving `r`.
+
+## Code
+Here's the code, my interpretation
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l, r = 0, 1
+        hash = defaultdict(int)  # hash contains { letter : appearance }
+
+        print(s)
+
+        max_len = 0
+        max_count = 0
+
+        if len(s) == 1:
+            return 1
+
+        # first set of characters input to hash
+        hash[s[l]] += 1
+
+        k_used = 0
+
+        while r <= len(s)-1:
+            hash[s[r]] += 1
+
+            # hitung `total(hash) - hash[max_val]`
+            max_count = max(max_count, hash[s[r]])
+            k_used = r - l + 1 - max_count
+
+            while k_used > k:
+                brp_kali_masuk += 1
+                hash[s[l]] -= 1
+                l += 1
+                k_used = r - l + 1 - max_count
+
+            max_len = max(max_len, r - l + 1)
+            r += 1
+
+        return max_len
+```
+
+A bit neater would be
+```python
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l, r = 0, 1
+        hash = defaultdict(int)  # hash contains { letter : appearance }
+
+        print(s)
+
+        max_len = 0
+        max_count = 0
+
+        if len(s) == 1:
+            return 1
+
+        # first set of characters input to hash
+        hash[s[l]] += 1
+
+        k_used = 0
+
+        while r <= len(s)-1:
+            hash[s[r]] += 1
+
+            max_count = max(max_count, hash[s[r]])
+            k_used = r - l + 1 - max_count
+
+            while r - l + 1 - max_count > k:
+                brp_kali_masuk += 1
+                hash[s[l]] -= 1
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+            r += 1
+
+        return max_len
+```
