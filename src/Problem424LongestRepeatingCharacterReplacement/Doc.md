@@ -586,16 +586,12 @@ class Solution:
         # first set of characters input to hash
         hash[s[l]] += 1
 
-        k_used = 0
-
         while r <= len(s)-1:
             hash[s[r]] += 1
 
             max_count = max(max_count, hash[s[r]])
-            k_used = r - l + 1 - max_count
 
             while r - l + 1 - max_count > k:
-                brp_kali_masuk += 1
                 hash[s[l]] -= 1
                 l += 1
 
