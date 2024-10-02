@@ -31,6 +31,7 @@ class Solution:
 
             node2.next = nodePrev
 
+        # don't forget to set the final node, to the node2
         node1.next = node2
 
         return node1
