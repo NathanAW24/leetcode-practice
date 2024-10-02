@@ -8,7 +8,7 @@ class ListNode:
         self.next = next
 
     def __str__(self):
-        return str(f"node_val {self.val} node_next {self.next}")
+        return str(f"node_val {self.val} node_next {self.next.val}")
 
 
 class Solution:
@@ -16,26 +16,38 @@ class Solution:
         """
         Do not return anything, modify head in-place instead.
         """
+        # slow fast, to find middle
+        slow = head
+        fast = head.next
 
-        n = 0
-        nodeCounter = head
-        while nodeCounter != None:
-            n += 1
-            nodeCounter = nodeCounter.next
-
-        c = 0
-
-        nodeL = head
-        while n - 2*c - 1 != 0:
-
-            nodeR = nodeL
-            for i in range(n - 2*c - 1):
-                nodeR = nodeR.next
-
-            nodeR.next = nodeL.next
-            nodeL.next = nodeR
-            nodeL = nodeL.next.next
+        
+        
         return
+
+    # copy reverseList from leetcode Problem206
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head == None:
+            return head
+
+        if head.next == None:
+            return head
+
+        node1 = head
+        node2 = None
+
+        while node1.next != None:
+            nodePrev = node2
+
+            node2 = node1
+
+            node1 = node1.next
+
+            node2.next = nodePrev
+
+        # don't forget to set the final node, to the node2
+        node1.next = node2
+
+        return node1
 
     def checker(self, head):
         node = head
