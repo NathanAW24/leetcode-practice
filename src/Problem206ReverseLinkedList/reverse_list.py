@@ -21,9 +21,10 @@ class Solution:
             return head
 
         node1 = head
+        node2 = None
 
         while node1.next != None:
-            nodePrev = None if node1 == head else node2
+            nodePrev = node2
 
             node2 = node1
 
