@@ -19,17 +19,24 @@ class Solution:
         # slow fast, to find middle
         slow = head
         fast = head.next
-
         while fast != None and fast.next != None:
             slow = slow.next
             fast = fast.next.next
 
         # reverse list for second half
         # slow.next because, slow is still at the last element of first list
-        second_list = self.reverseList(slow.next)
+        second_list = slow.next
+        slow.next = None
+        prev = None
+        while second_list != None:
+            tmp = second_list.next
+            second_list.next = prev
+            prev = second_list
+            second_list = tmp
 
+        # merge first and second list
         first_list = head
-
+        second_list = prev
         while second_list != None or first_list != None:
             # store original next values
             original_first_list_next = first_list.next
@@ -44,31 +51,6 @@ class Solution:
             second_list = original_second_list_next
 
         return
-
-    # copy reverseList from leetcode Problem206
-    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if head == None:
-            return head
-
-        if head.next == None:
-            return head
-
-        node1 = head
-        node2 = None
-
-        while node1.next != None:
-            nodePrev = node2
-
-            node2 = node1
-
-            node1 = node1.next
-
-            node2.next = nodePrev
-
-        # don't forget to set the final node, to the node2
-        node1.next = node2
-
-        return node1
 
     def checker(self, head):
         node = head
