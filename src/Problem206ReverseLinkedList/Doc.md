@@ -90,7 +90,9 @@ Also made a checker function for testing purposes.
 
 # Neetcode Solution
 Same logic as mine, but use slightly neater pointer values.
+
 ![alt text](image.png)
 
 Here's his solution using recursion also.
+
 ![alt text](image-1.png)
