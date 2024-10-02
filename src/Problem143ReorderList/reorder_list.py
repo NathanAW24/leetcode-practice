@@ -20,8 +20,29 @@ class Solution:
         slow = head
         fast = head.next
 
-        
-        
+        while fast != None and fast.next != None:
+            slow = slow.next
+            fast = fast.next.next
+
+        # reverse list for second half
+        # slow.next because, slow is still at the last element of first list
+        second_list = self.reverseList(slow.next)
+
+        first_list = head
+
+        while second_list != None or first_list != None:
+            # store original next values
+            original_first_list_next = first_list.next
+            original_second_list_next = second_list.next
+
+            # reorder the values first
+            first_list.next = second_list
+            second_list.next = original_first_list_next
+
+            # set the first and second list pointer to the values they previously should hold before re-ordering
+            first_list = original_first_list_next
+            second_list = original_second_list_next
+
         return
 
     # copy reverseList from leetcode Problem206
