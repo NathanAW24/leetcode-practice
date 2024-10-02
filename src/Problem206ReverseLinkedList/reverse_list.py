@@ -30,11 +30,8 @@ class Solution:
             node1 = node1.next
 
             node2.next = nodePrev
-            # print(f'nodePrev: {nodePrev}, node1: {node1}, node2: {node2}')
 
-        # don't forget to set the final node, to the node2
         node1.next = node2
-        # print(f'nodePrev: {nodePrev}, node1: {node1}, node2: {node2}')
 
         return node1
 
