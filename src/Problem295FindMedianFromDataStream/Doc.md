@@ -50,4 +50,13 @@ Basically, my logic means...
 Neetcode has similar logic for `addNum` with slightly different details.
 ![alt text](image-1.png)
 
-But for `findMedian` there's a simpler solution, no need to keep track of `total_elems`.
+But for `findMedian` there's a simpler solution, no need to keep track of `total_elems`. Just need to check for size of `small_heap` and `large_heap`.
+```python
+...
+    def findMedian(self) -> float:
+        if len(self.small_heap) > len(self.large_heap):
+            return -self.small_heap[0]
+        else:
+            return (-self.small_heap[0] + self.large_heap[0])/2
+...
+```
