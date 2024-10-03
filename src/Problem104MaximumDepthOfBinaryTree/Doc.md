@@ -1,5 +1,5 @@
 # Thought Process
-Problem was quite easy, not need a lot of time to resolve tbh. Basically logical thought process was just to traverse pre-order
+Problem was quite easy, not need a lot of time to resolve tbh. Basically logical thought process was just to traverse pre-order, then keep `count` variable and `max_count` variable.
 ```python
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
