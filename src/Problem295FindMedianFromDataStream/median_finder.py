@@ -7,12 +7,9 @@ class MedianFinder:
         # max_heap (negate values to work with library) # fill this up first, so might only be bigger by 1 at most
         self.small_heap = []
         self.large_heap = []  # min_heap
-        self.total_elems = 0
         return
 
     def addNum(self, num: int) -> None:
-        self.total_elems += 1
-
         if len(self.small_heap) == 0:  # large_heap also 0
             heapq.heappush(self.small_heap, -num)
         elif len(self.small_heap) - len(self.large_heap) >= 1:  # diff = 0
@@ -30,8 +27,7 @@ class MedianFinder:
         return
 
     def findMedian(self) -> float:
-        if self.total_elems % 2:
-            # true --> 1 --> odd
+        if len(self.small_heap) > len(self.large_heap):
             return -self.small_heap[0]
         else:
             return (-self.small_heap[0] + self.large_heap[0])/2

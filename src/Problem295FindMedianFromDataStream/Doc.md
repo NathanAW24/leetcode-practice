@@ -46,3 +46,8 @@ class MedianFinder:
 Basically, my logic means...
 - if both `small_heap` and `large_heap` are same size &rarr; we want to fill in `small_heap`, means we have to add to `large_heap` then pop `large_heap`'s new smallest value, and append it to `small_heap`. Keep in mind that `<large_heap-new-smallest-value> >= <small_heap-biggest-value>`.
 - if `small_heap` is bigger than `large_heap` by one &rarr; we want to fill in `large_heap`, means we have to add to `small_heap` then pop `small_heap`'s new biggest value, and append it to `large_heap`. Keep in mind that `<small_heap-new-biggest-value> <= <large_heap-smallest-value>`.
+
+Neetcode has similar logic for `addNum` with slightly different details.
+![alt text](image-1.png)
+
+But for `findMedian` there's a simpler solution, no need to keep track of `total_elems`.
