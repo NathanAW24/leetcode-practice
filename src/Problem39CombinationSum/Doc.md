@@ -170,3 +170,7 @@ class Solution:
 
         return results
 ```
+
+# Neetcode
+Here's neetcode solution use recursion `dfs`.
+![alt text](image-1.png)
