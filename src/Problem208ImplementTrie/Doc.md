@@ -166,3 +166,54 @@ Problem is here
 ```
 
 When `insert` is run and it is at `idx==0` it doesn't go through the `idx == len(word) - 1` even though it is the last word.
+
+# Neetcode
+Neetcode's solution no need so mafan.
+```python
+class Trie:
+
+    def __init__(self):
+        # strores { "a" : {"next_letter": ["p"] , is_end: False} }
+        self.root = TrieNode()
+        return
+
+    def insert(self, word: str) -> None:
+        cur: TrieNode = self.root
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()  # get from dictionary
+            cur = cur.children[c]  # retrieve the TrieNode()
+        cur.isEnd = True  # the last one will get isEnd
+
+        # print(self.root)
+        return
+
+    def search(self, word: str) -> bool:
+        cur = self.root
+        # print(searchNode)
+
+        for c in word:
+            if c not in cur.children:
+                return False
+            # just normally traverse the tree until the end of the `word`
+            cur = cur.children[c]
+
+        return cur.isEnd
+
+    def startsWith(self, prefix: str) -> bool:
+        # same logic but less strict than search
+        cur = self.root
+        # print(searchNode)
+
+        for c in prefix:
+            if c not in cur.children:
+                return False
+            # just normally traverse the tree until the end of the `word`
+            cur = cur.children[c]
+
+        return True
+```
+
+logic is simple, but use the proper data structure, don't overcomplicate the `TrieNode` structure esp.
+
+ 
