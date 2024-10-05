@@ -4,20 +4,21 @@ from typing import List
 
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
-        dp_max = {}  # arr-idx : max-value-from-0-to-i-inc
-        dp_min = {}  # arr-idx: min-value-from-0-to-i-inc
+        dp_max = 1  # arr-idx : max-value-from-0-to-i-inc
+        dp_min = 1  # arr-idx: min-value-from-0-to-i-inc
         max_num = max(nums)
 
         for i in range(len(nums)):
             if i == 0:
-                dp_max[i] = nums[i]
-                dp_min[i] = nums[i]
+                dp_max = nums[i]
+                dp_min = nums[i]
             else:
-                dp_max[i] = max(dp_max[i-1] * nums[i],
-                                dp_min[i-1] * nums[i], nums[i])
-                dp_min[i] = min(dp_max[i-1] * nums[i],
-                                dp_min[i-1] * nums[i], nums[i])
-            max_num = max(dp_max[i], max_num)
+                temp_dp_max_calc = dp_max * nums[i]
+                dp_max = max(temp_dp_max_calc,
+                             dp_min * nums[i], nums[i])
+                dp_min = min(temp_dp_max_calc,
+                             dp_min * nums[i], nums[i])
+            max_num = max(dp_max, max_num)
 
         return max_num
 
