@@ -6,17 +6,17 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class Foo {
 
-    private static final Lock lock = new ReentrantLock();
-    private static final Condition condition1 = lock.newCondition();
-    private static final Condition condition2 = lock.newCondition();
-    private static boolean task1Completed = false;
-    private static boolean task2Completed = false;
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition1 = lock.newCondition();
+    private final Condition condition2 = lock.newCondition();
+    private boolean task1Completed = false;
+    private boolean task2Completed = false;
 
     public Foo() {}
 
     public void first(Runnable printFirst) throws InterruptedException {
         lock.lock();
-        try{ // this block indicates an atomic process
+        try {
             printFirst.run();
             task1Completed = true;
             condition1.signal();
@@ -51,8 +51,6 @@ class Foo {
         }
     }
 
-    // helpers for printFirst printSecond and printThird
-
     public static class PrintFirst implements Runnable {
         @Override
         public void run() {
@@ -74,11 +72,9 @@ class Foo {
         }
     }
 
-    // Main method to run the example
     public static void main(String[] args) throws InterruptedException {
         Foo foo = new Foo();
 
-        // Instantiate the static inner classes
         Runnable printFirst = new Foo.PrintFirst();
         Runnable printSecond = new Foo.PrintSecond();
         Runnable printThird = new Foo.PrintThird();
@@ -107,9 +103,8 @@ class Foo {
             }
         });
 
-        thread3.start();
         thread1.start();
         thread2.start();
-
+        thread3.start();
     }
 }
