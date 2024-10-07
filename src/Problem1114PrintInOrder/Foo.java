@@ -1,37 +1,54 @@
 package Problem1114PrintInOrder;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 class Foo {
 
-    private AtomicInteger firstJobDone = new AtomicInteger(0);
-    private AtomicInteger secondJobDone = new AtomicInteger(0);
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition condition1 = lock.newCondition();
+    private static final Condition condition2 = lock.newCondition();
+    private static boolean task1Completed = false;
+    private static boolean task2Completed = false;
 
     public Foo() {}
 
     public void first(Runnable printFirst) throws InterruptedException {
-        // printFirst.run() outputs "first".
-        printFirst.run();
-        // mark the first job as done, by increasing its count.
-        firstJobDone.incrementAndGet();
+        lock.lock();
+        try{ // this block indicates an atomic process
+            printFirst.run();
+            task1Completed = true;
+            condition1.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-        while (firstJobDone.get() != 1) {
-            // waiting for the first job to be done.
+        lock.lock();
+        try {
+            while (!task1Completed) {
+                condition1.await();
+            }
+            printSecond.run();
+            task2Completed = true;
+            condition2.signal();
+        } finally {
+            lock.unlock();
         }
-        // printSecond.run() outputs "second".
-        printSecond.run();
-        // mark the second as done, by increasing its count.
-        secondJobDone.incrementAndGet();
     }
 
     public void third(Runnable printThird) throws InterruptedException {
-        while (secondJobDone.get() != 1) {
-            // waiting for the second job to be done.
+        lock.lock();
+        try {
+            while (!task2Completed) {
+                condition2.await();
+            }
+            printThird.run();
+        } finally {
+            lock.unlock();
         }
-        // printThird.run() outputs "third".
-        printThird.run();
     }
 
     // helpers for printFirst printSecond and printThird

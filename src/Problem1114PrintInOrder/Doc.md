@@ -253,6 +253,244 @@ class Foo {
 }
 ```
 
+# ChatGPT Normal Locks
+This is another method we can use using more conventional method `ReentrantLock`s
 
+## Java Concept: `ReentrantLock`
+Using ReentrantLocks, you need to have a `lock`, 2 `condition`s, and flag for `taskCompleted`. Here is a sample usecase of `ReentrantLock`.
+```java
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-# Tags: `Concurrency`, `CountDownLatch`
+public class SequenceRunnablesWithLock {
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition condition1 = lock.newCondition();
+    private static final Condition condition2 = lock.newCondition();
+    private static boolean task1Completed = false;
+    private static boolean task2Completed = false;
+
+    public static void main(String[] args) {
+        Runnable task1 = () -> {
+            lock.lock();
+            try {
+                System.out.println("Task 1 running");
+                task1Completed = true;
+                condition1.signal(); // Signal task2 to proceed
+            } finally {
+                lock.unlock();
+            }
+        };
+
+        Runnable task2 = () -> {
+            lock.lock();
+            try {
+                while (!task1Completed) {
+                    condition1.await(); // Wait until task1 is completed
+                }
+                System.out.println("Task 2 running");
+                task2Completed = true;
+                condition2.signal(); // Signal task3 to proceed
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                lock.unlock();
+            }
+        };
+
+        Runnable task3 = () -> {
+            lock.lock();
+            try {
+                while (!task2Completed) {
+                    condition2.await(); // Wait until task2 is completed
+                }
+                System.out.println("Task 3 running");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                lock.unlock();
+            }
+        };
+
+        // Starting all tasks simultaneously
+        new Thread(task3).start();
+        new Thread(task2).start();
+        new Thread(task1).start();
+    }
+}
+```
+
+## Implementation
+This is how I implement it for this problem.
+```java
+package Problem1114PrintInOrder;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+class Foo {
+
+    private static final Lock lock = new ReentrantLock();
+    private static final Condition condition1 = lock.newCondition();
+    private static final Condition condition2 = lock.newCondition();
+    private static boolean task1Completed = false;
+    private static boolean task2Completed = false;
+
+    public Foo() {}
+
+    public void first(Runnable printFirst) throws InterruptedException {
+        lock.lock();
+        try{ // this block indicates an atomic process
+            printFirst.run();
+            task1Completed = true;
+            condition1.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void second(Runnable printSecond) throws InterruptedException {
+        lock.lock();
+        try {
+            while (!task1Completed) {
+                condition1.await();
+            }
+            printSecond.run();
+            task2Completed = true;
+            condition2.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        lock.lock();
+        try {
+            while (!task2Completed) {
+                condition2.await();
+            }
+            printThird.run();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // helpers for printFirst printSecond and printThird
+
+    public static class PrintFirst implements Runnable {
+        @Override
+        public void run() {
+            System.out.print("first");
+        }
+    }
+
+    public static class PrintSecond implements Runnable {
+        @Override
+        public void run() {
+            System.out.print("second");
+        }
+    }
+
+    public static class PrintThird implements Runnable {
+        @Override
+        public void run() {
+            System.out.print("third");
+        }
+    }
+
+    // Main method to run the example
+    public static void main(String[] args) throws InterruptedException {
+        Foo foo = new Foo();
+
+        // Instantiate the static inner classes
+        Runnable printFirst = new Foo.PrintFirst();
+        Runnable printSecond = new Foo.PrintSecond();
+        Runnable printThird = new Foo.PrintThird();
+
+        Thread thread1 = new Thread(() -> {
+            try {
+                foo.first(printFirst);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            try {
+                foo.second(printSecond);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        Thread thread3 = new Thread(() -> {
+            try {
+                foo.third(printThird);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        thread3.start();
+        thread1.start();
+        thread2.start();
+
+    }
+}
+```
+
+The locking mechanism here is very different. Here's the generic sequence diagram that has to be done.
+```mermaid
+sequenceDiagram
+    participant first as first(Runnable)
+    participant second as second(Runnable)
+    participant third as third(Runnable)
+    participant lock as ReentrantLock
+    participant cond1 as Condition1
+    participant cond2 as Condition2
+    participant flag1 as task1Completed
+    participant flag2 as task2Completed
+
+    first->>lock: lock.lock()
+    lock-->>first: Acquired lock
+    first->>first: printFirst.run()
+    first->>flag1: task1Completed = true
+    first->>cond1: condition1.signal()
+    first->>lock: lock.unlock()
+    lock-->>first: Released lock
+
+    second->>lock: lock.lock()
+    alt !task1Completed
+        second->>cond1: condition1.await()
+        cond1-->>second: Waiting...
+    end
+    cond1-->>second: Signal received
+    lock-->>second: Acquired lock
+    second->>second: printSecond.run()
+    second->>flag2: task2Completed = true
+    second->>cond2: condition2.signal()
+    second->>lock: lock.unlock()
+    lock-->>second: Released lock
+
+    third->>lock: lock.lock()
+    alt !task2Completed
+        third->>cond2: condition2.await()
+        cond2-->>third: Waiting...
+    end
+    cond2-->>third: Signal received
+    lock-->>third: Acquired lock
+    third->>third: printThird.run()
+    third->>lock: lock.unlock()
+    lock-->>third: Released lock
+```
+
+This is the list of important stuff to run for `second`:
+1. lock resource &rarr; `lock.lock()`
+2. while loop to wait for previous task flag to finish &rarr; `while(!task1Completed) {...}`
+3. pause for process to finish &rarr; `condition1.await()`
+4. main process to print &rarr; `printSecond.run()`
+5. set flag for this task to be true &rarr; `task2Completed = true`
+6. unlock resource &rarr; `lock.unlock()`
+
+# Tags: `Concurrency`, `CountDownLatch`, `AtomicInteger`, `ReentrantLock`

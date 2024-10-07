@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72d8a23e-c6a6-41ea-86a5-bcfdc61203d9" name="Changes" comment="initial commit for problem 1114 leetcode">
+    <list default="true" id="72d8a23e-c6a6-41ea-86a5-bcfdc61203d9" name="Changes" comment="AtomicInteger solution in leetcode editorial">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Doc.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Doc.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Foo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Foo.java" afterDir="false" />
@@ -176,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728286446348</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="AtomicInteger solution in leetcode editorial">
+      <option name="closed" value="true" />
+      <created>1728290860413</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1728290860413</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -229,7 +237,8 @@
     <MESSAGE value="Initialize Java repo for leetcode, sample TwoSum code" />
     <MESSAGE value="Pascal Triangle DP Problem bottom up, done" />
     <MESSAGE value="initial commit for problem 1114 leetcode" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit for problem 1114 leetcode" />
+    <MESSAGE value="AtomicInteger solution in leetcode editorial" />
+    <option name="LAST_COMMIT_MESSAGE" value="AtomicInteger solution in leetcode editorial" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
