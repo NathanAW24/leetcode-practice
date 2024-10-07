@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72d8a23e-c6a6-41ea-86a5-bcfdc61203d9" name="Changes" comment="initial commit for problem 1114 leetcode">
-      <change afterPath="$PROJECT_DIR$/src/Problem1114PrintInOrder/img.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Doc.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Doc.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Foo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Problem1114PrintInOrder/Foo.java" afterDir="false" />

@@ -1,32 +1,36 @@
 package Problem1114PrintInOrder;
 
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class Foo {
 
-    CountDownLatch firstDone = new CountDownLatch(1);
-    CountDownLatch secondDone = new CountDownLatch(1);
+    private AtomicInteger firstJobDone = new AtomicInteger(0);
+    private AtomicInteger secondJobDone = new AtomicInteger(0);
 
-    public Foo() {
-
-    }
+    public Foo() {}
 
     public void first(Runnable printFirst) throws InterruptedException {
-        // printFirst.run() outputs "first". Do not change or remove this line.
+        // printFirst.run() outputs "first".
         printFirst.run();
-        firstDone.countDown();
+        // mark the first job as done, by increasing its count.
+        firstJobDone.incrementAndGet();
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-        firstDone.await();
-        // printSecond.run() outputs "second". Do not change or remove this line.
+        while (firstJobDone.get() != 1) {
+            // waiting for the first job to be done.
+        }
+        // printSecond.run() outputs "second".
         printSecond.run();
-        secondDone.countDown();
+        // mark the second as done, by increasing its count.
+        secondJobDone.incrementAndGet();
     }
 
     public void third(Runnable printThird) throws InterruptedException {
-        secondDone.await();
-        // printThird.run() outputs "third". Do not change or remove this line.
+        while (secondJobDone.get() != 1) {
+            // waiting for the second job to be done.
+        }
+        // printThird.run() outputs "third".
         printThird.run();
     }
 
@@ -86,9 +90,9 @@ class Foo {
             }
         });
 
+        thread3.start();
         thread1.start();
         thread2.start();
-        thread3.start();
 
     }
 }

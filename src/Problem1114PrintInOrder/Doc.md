@@ -147,6 +147,112 @@ class Foo {
 Basically, we need to have two locks for `first` and `second` method. Editorial gives `firstJobDone` and `secondJobDone` to indicate whether the `first` and `second` method is done or not.
 ![img.png](img.png)
 
+## Java Concept: `AtomicInteger`
+`AtomicInteger` methods start the integer from `0`, and we can call `<atomicInteger>.get()` and `<atomicInteger>.incrementAndGet()`. We start at `0`, the increment after process is done. We use an unending `while` loop, to start breaking when the `<atomicInteger>` is finished, and start running the next process. 
+
+## Implementation
+
+```java
+package Problem1114PrintInOrder;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+class Foo {
+
+    private AtomicInteger firstJobDone = new AtomicInteger(0);
+    private AtomicInteger secondJobDone = new AtomicInteger(0);
+
+    public Foo() {}
+
+    public void first(Runnable printFirst) throws InterruptedException {
+        // printFirst.run() outputs "first".
+        printFirst.run();
+        // mark the first job as done, by increasing its count.
+        firstJobDone.incrementAndGet();
+    }
+
+    public void second(Runnable printSecond) throws InterruptedException {
+        while (firstJobDone.get() != 1) {
+            // waiting for the first job to be done.
+        }
+        // printSecond.run() outputs "second".
+        printSecond.run();
+        // mark the second as done, by increasing its count.
+        secondJobDone.incrementAndGet();
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        while (secondJobDone.get() != 1) {
+            // waiting for the second job to be done.
+        }
+        // printThird.run() outputs "third".
+        printThird.run();
+    }
+
+    // helpers for printFirst printSecond and printThird
+
+    public static class PrintFirst implements Runnable {
+        @Override
+        public void run() {
+            System.out.print("first");
+        }
+    }
+
+    public static class PrintSecond implements Runnable {
+        @Override
+        public void run() {
+            System.out.print("second");
+        }
+    }
+
+    public static class PrintThird implements Runnable {
+        @Override
+        public void run() {
+            System.out.print("third");
+        }
+    }
+
+    // Main method to run the example
+    public static void main(String[] args) throws InterruptedException {
+        Foo foo = new Foo();
+
+        // Instantiate the static inner classes
+        Runnable printFirst = new Foo.PrintFirst();
+        Runnable printSecond = new Foo.PrintSecond();
+        Runnable printThird = new Foo.PrintThird();
+
+        Thread thread1 = new Thread(() -> {
+            try {
+                foo.first(printFirst);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        Thread thread2 = new Thread(() -> {
+            try {
+                foo.second(printSecond);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        Thread thread3 = new Thread(() -> {
+            try {
+                foo.third(printThird);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        thread3.start();
+        thread1.start();
+        thread2.start();
+
+    }
+}
+```
+
 
 
 # Tags: `Concurrency`, `CountDownLatch`
