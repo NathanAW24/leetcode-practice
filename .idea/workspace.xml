@@ -58,18 +58,31 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "problem-1114-print-in-order",
+    "git-widget-placeholder": "problem-1226-the-dining-philosophers",
     "onboarding.tips.debug.path": "/Users/nathanaldrichwiryawan/Documents/LEETCODE/leetcode-practice/src/Main.java",
     "settings.editor.selected.configurable": "vcs.Git"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.Foo">
+  <component name="RunManager" selected="Application.DiningPhilosophers">
     <configuration name="AddTwoNumbers" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Problem2AddTwoNumbers.AddTwoNumbers" />
       <module name="leetcode-practice" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Problem2AddTwoNumbers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DiningPhilosophers" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Problem1226TheDiningPhilosophers.DiningPhilosophers" />
+      <module name="leetcode-practice" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Problem1226TheDiningPhilosophers.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -116,26 +129,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TwoSum" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Problem1TwoSum.TwoSum" />
-      <module name="leetcode-practice" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Problem1TwoSum.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DiningPhilosophers" />
         <item itemvalue="Application.Foo" />
         <item itemvalue="Application.MissingNumber" />
         <item itemvalue="Application.PascalsTriangle" />
         <item itemvalue="Application.AddTwoNumbers" />
-        <item itemvalue="Application.TwoSum" />
       </list>
     </recent_temporary>
   </component>
