@@ -1,0 +1,2 @@
+# Nathan's Leetcode Practice
+Initially got cocky, want to do java, but then realized its hindering my actual learning-the-algos process, so I just switched to python lmao. Occasionally use java for concurrency stuff tho.
