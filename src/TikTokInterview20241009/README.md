@@ -7,7 +7,7 @@ The second mobile phone there.
 ![alt text](image.png)
 
 ## Question 2
-Given a string `"abcd-e-f"` reverse the string but keep the dashes (or non-letters) there. So the reverse string here will be `"fedc-b-a"`.
+Given a string `"abcd-e-f"` reverse the string but keep the dashes (or non-letters) there. So the reverse string here will be `"fedc-b-a"`. Basically this [leetcode question](https://leetcode.com/problems/reverse-vowels-of-a-string/description/) with additional modif.
 
 Solution uses two pointer, then always do check for values at both pointers
 - `s[l]` and `s[r]` are letters (`<some-character>.isalpha()`) &rarr; `switch s[l] and s[r]`; `move l+=1`, `move r-=1`
