@@ -17,17 +17,8 @@ class Solution:
             elif new_l > anchor_r:
                 result.append(interval)
 
-            elif new_l <= anchor_l <= anchor_r <= new_r:
-                newInterval = [new_l, new_r]
-
-            elif anchor_l <= new_l <= new_r <= anchor_r:
-                newInterval = [anchor_l, anchor_r]
-
-            elif new_l <= anchor_l <= new_r:
-                newInterval = [new_l, anchor_r]
-
-            elif new_l <= anchor_r <= new_r:
-                newInterval = [anchor_l, new_r]
+            else:
+                newInterval = [min(new_l, anchor_l), max(new_r, anchor_r)]
 
         result.append(newInterval)
 
