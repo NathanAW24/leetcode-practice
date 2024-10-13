@@ -14,4 +14,6 @@ newInterval is still [4, 8]
 
 [3, 5] --> merge --> newInterval = [4, 8] --> append [4, 8] --> res = [ [1,2], [4,8] ]
 
-[6, 7] --> merge --> newInterval = [4, 8] --> append
+[6, 7] --> merge --> newInterval = [4, 8] --> pop res[-1] --> res = [ [1,2] ] --> append newInterval = [4, 8] --> res = [ [1,2], [4,8] ]
+
+Append pop not efficient.
